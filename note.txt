@@ -1,0 +1,64 @@
+Go
+-------------------
+
+Google 2007
+OpenSource 2009
+
+___
+
+
+Why Go?
+
+MultiCore Processors
+Could  Infrastructure
+Big Network coompuation Clusters
+
+Go was designed to run on multiple cores and built to support Concurrency
+Concurrency in go is cheap and easy
+scaled 
+and distributed system
+
+simple and readable but Fast
+
+Docker HashiCorp Vault Kuberneties Cockroach db
+
+___
+
+
+Core Concepts:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
