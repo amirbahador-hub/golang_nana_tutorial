@@ -73,9 +73,22 @@ func main() {
 			}
 			fmt.Printf("your input is invalid, TRY AGAIN  \n")
 			
-		}
-		
+		}		
 	}
+
+	city := "London"
+	switch city {
+	case "New York":
+		// execute code for booking New York conference tickets
+	case "London" :
+		// spe
+	case "Tehran" , "Berlin":
+		// same logic for Tehran and berlin
+	default:
+		fmt.Print("No valid city")
+	}
+
+
 }
 
 
