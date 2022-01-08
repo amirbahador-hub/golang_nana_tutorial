@@ -16,7 +16,7 @@ func main() {
 	fmt.Printf("We have total of %v tickets and %v are still available\n", conferenceTickets, remainingTickets)
 	fmt.Println("Get your tickets here to attend")
 
-	for {
+	for remainingTickets>0 && len(bookings) < 50{
 
 		var firstName string
 		var lastName string
@@ -55,9 +55,6 @@ func main() {
 				fmt.Println("Our conference is booked out. see you next year")
 				break
 			}
-		} else if userTickets == remainingTickets {
-			fmt.Println("you booked out all tickets")
-			break
 		} else {
 			fmt.Printf("We only have %v tickets so your can't book %v tickets \n", remainingTickets, userTickets)
 			
