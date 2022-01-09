@@ -1,6 +1,9 @@
 package main // a package is a collection of GO files
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 var conferenceName = "GO Conference"
 
@@ -27,6 +30,7 @@ func main() {
 		if isValidEmail && isValidName && isValidTicketsNumber {
 
 			bookTicket(userTickets, firstName, lastName, email)
+			go sendTicket(userTickets, firstName, lastName, email)
 			firstNames := getFirstNames()
 			fmt.Printf("The first names is %v \n", firstNames)
 
@@ -108,4 +112,16 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 	fmt.Printf("List of bookings is %v \n", bookings)
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v \n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets remaining for %v \n", remainingTickets, conferenceTickets)
+}
+
+
+func sendTicket(userTickets uint, firstName string, lastName string, email string){
+
+	time.Sleep(10 * time.Second) // simulation of log task
+	// for example generate pdf and send to email by real
+
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("###########################")
+	fmt.Printf("Sending ticket: \n %v \nto email address %v\n", ticket, email)
+	fmt.Println("###########################")
 }
