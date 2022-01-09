@@ -3,7 +3,6 @@ package main // a package is a collection of GO files
 import (
 	"fmt"
 	"strings"
-	"booking-app/helper"
 )
 
 var conferenceName = "GO Conference"
@@ -18,7 +17,7 @@ func main() {
 	for {
 
 		firstName, lastName, email, userTickets := getUserInput()
-		isValidEmail, isValidName, isValidTicketsNumber := helper.ValidatedUserInput(firstName, lastName, email, userTickets, remainingTickets)
+		isValidEmail, isValidName, isValidTicketsNumber := ValidatedUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidEmail && isValidName && isValidTicketsNumber {
  
