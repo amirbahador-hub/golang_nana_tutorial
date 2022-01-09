@@ -1,15 +1,19 @@
 package main // a package is a collection of GO files
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
 
 var conferenceName = "GO Conference"
 
 const conferenceTickets = 50 // Not Changeable
 var remainingTickets uint = 50
-var bookings = make([]map[string]string, 0) // now this is an slice
+var bookings = make([]UserData, 0) // now this is an slice
+
+type UserData struct {
+	firstName string
+	lastName string
+	email string
+	numberOfTickets uint
+}
 
 func main() {
 
@@ -60,7 +64,7 @@ func getFirstNames() []string {
 	firstNames := []string{}
 	for _, booking := range bookings {
 		// var names = strings.Fields(booking) // split separate by space
-		firstNames = append(firstNames, booking["firstName"])
+		firstNames = append(firstNames, booking.firstName)
 	}
 
 	return firstNames
@@ -93,13 +97,12 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 	remainingTickets = remainingTickets - userTickets
 
 	// create a map for user
-	var userData = make(map[string]string)  // [key_type]value_type   make is for create empty map
-	userData["firstName"] = firstName
-	userData["lastName"] = lastName
-	userData["email"] = email
-	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10)
-
-
+	var userData = UserData {
+		firstName: firstName,
+		lastName: lastName,
+		email: email,
+		numberOfTickets: userTickets,
+	}
 
 	bookings = append(bookings, userData)
 	fmt.Printf("List of bookings is %v \n", bookings)
