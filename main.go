@@ -1,4 +1,4 @@
-package main
+package main // a package is a collection of GO files
 
 import (
 	"fmt"
@@ -59,7 +59,7 @@ func getFirstNames() []string {
 
 	firstNames := []string{}
 	for _ , booking := range bookings {
-		var names = strings.Fields(booking)
+		var names = strings.Fields(booking) // split separate by space
 		firstNames = append(firstNames, names[0])
 	}
 
@@ -67,13 +67,7 @@ func getFirstNames() []string {
 
 }
 
-func validatedUserInput(firstName string, lastName string, email string, userTickets uint) (bool, bool, bool) {
-		isValidName :=  len(firstName) >= 2 && len(lastName) >= 2
-		isValidEmail := strings.Contains(email, "@")
-		isValidTicketsNumber := userTickets > 0 && userTickets <= remainingTickets
 
-		return isValidName, isValidEmail, isValidTicketsNumber
-}
 
 func getUserInput () (string, string, string, uint){
 		var firstName string
