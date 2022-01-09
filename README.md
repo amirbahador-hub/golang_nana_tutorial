@@ -1,5 +1,5 @@
 # golang_nana_tutorial
-just follow [a nana_tutorial](https://www.youtube.com/watch?v=yyUHQIec83I) with meaningful commits
+just follow [Nana tutorial](https://www.youtube.com/watch?v=yyUHQIec83I) with meaningful commits
 
 ![alt tutorial text](https://github.com/amirbahador-hub/golang_nana_tutorial/blob/main/maxresdefault.jpg)
 
