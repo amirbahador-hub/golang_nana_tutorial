@@ -2,6 +2,7 @@ package main // a package is a collection of GO files
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -12,47 +13,44 @@ var remainingTickets uint = 50
 var bookings = make([]UserData, 0) // now this is an slice
 
 type UserData struct {
-	firstName string
-	lastName string
-	email string
+	firstName       string
+	lastName        string
+	email           string
 	numberOfTickets uint
 }
+
+var wg = sync.WaitGroup{}
 
 func main() {
 
 	greetUser()
 
-	for {
-
-		firstName, lastName, email, userTickets := getUserInput()
-		isValidEmail, isValidName, isValidTicketsNumber := ValidatedUserInput(firstName, lastName, email, userTickets, remainingTickets)
-
-		if isValidEmail && isValidName && isValidTicketsNumber {
-
-			bookTicket(userTickets, firstName, lastName, email)
-			go sendTicket(userTickets, firstName, lastName, email)
-			firstNames := getFirstNames()
-			fmt.Printf("The first names is %v \n", firstNames)
-
-			if remainingTickets == 0 {
-				// end the program
-				fmt.Println("Our conference is booked out. see you next year")
-				break
-			}
-		} else {
-			if !isValidName {
-				fmt.Println("first Name or last name is short")
-			}
-			if !isValidEmail {
-				fmt.Println("email address you entered doesn't have @ sign")
-			}
-			if !isValidTicketsNumber {
-				fmt.Println("number of tickets you entered is invalid")
-			}
-			fmt.Printf("your input is invalid, TRY AGAIN  \n")
-
+	firstName, lastName, email, userTickets := getUserInput()
+	isValidEmail, isValidName, isValidTicketsNumber := ValidatedUserInput(firstName, lastName, email, userTickets, remainingTickets)
+	if isValidEmail && isValidName && isValidTicketsNumber {
+		bookTicket(userTickets, firstName, lastName, email)
+		wg.Add(1)
+		go sendTicket(userTickets, firstName, lastName, email)
+		firstNames := getFirstNames()
+		fmt.Printf("The first names is %v \n", firstNames)
+		if remainingTickets == 0 {
+			// end the program
+			fmt.Println("Our conference is booked out. see you next year")
+			//break
 		}
+	} else {
+		if !isValidName {
+			fmt.Println("first Name or last name is short")
+		}
+		if !isValidEmail {
+			fmt.Println("email address you entered doesn't have @ sign")
+		}
+		if !isValidTicketsNumber {
+			fmt.Println("number of tickets you entered is invalid")
+		}
+		fmt.Printf("your input is invalid, TRY AGAIN  \n")
 	}
+	wg.Wait()
 
 }
 
@@ -101,10 +99,10 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 	remainingTickets = remainingTickets - userTickets
 
 	// create a map for user
-	var userData = UserData {
-		firstName: firstName,
-		lastName: lastName,
-		email: email,
+	var userData = UserData{
+		firstName:       firstName,
+		lastName:        lastName,
+		email:           email,
 		numberOfTickets: userTickets,
 	}
 
@@ -114,8 +112,7 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 	fmt.Printf("%v tickets remaining for %v \n", remainingTickets, conferenceTickets)
 }
 
-
-func sendTicket(userTickets uint, firstName string, lastName string, email string){
+func sendTicket(userTickets uint, firstName string, lastName string, email string) {
 
 	time.Sleep(10 * time.Second) // simulation of log task
 	// for example generate pdf and send to email by real
@@ -124,4 +121,5 @@ func sendTicket(userTickets uint, firstName string, lastName string, email strin
 	fmt.Println("###########################")
 	fmt.Printf("Sending ticket: \n %v \nto email address %v\n", ticket, email)
 	fmt.Println("###########################")
+	wg.Done()
 }
