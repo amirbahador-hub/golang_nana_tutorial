@@ -2,13 +2,14 @@ package main // a package is a collection of GO files
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 var conferenceName = "GO Conference"
+
 const conferenceTickets = 50 // Not Changeable
 var remainingTickets uint = 50
-var bookings = []string{} // now this is an slice
+var bookings = make([]map[string]string, 0) // now this is an slice
 
 func main() {
 
@@ -20,7 +21,7 @@ func main() {
 		isValidEmail, isValidName, isValidTicketsNumber := ValidatedUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidEmail && isValidName && isValidTicketsNumber {
- 
+
 			bookTicket(userTickets, firstName, lastName, email)
 			firstNames := getFirstNames()
 			fmt.Printf("The first names is %v \n", firstNames)
@@ -41,10 +42,9 @@ func main() {
 				fmt.Println("number of tickets you entered is invalid")
 			}
 			fmt.Printf("your input is invalid, TRY AGAIN  \n")
-			
-		}		
-	}
 
+		}
+	}
 
 }
 
@@ -58,42 +58,51 @@ func greetUser() {
 func getFirstNames() []string {
 
 	firstNames := []string{}
-	for _ , booking := range bookings {
-		var names = strings.Fields(booking) // split separate by space
-		firstNames = append(firstNames, names[0])
+	for _, booking := range bookings {
+		// var names = strings.Fields(booking) // split separate by space
+		firstNames = append(firstNames, booking["firstName"])
 	}
 
 	return firstNames
 
 }
 
+func getUserInput() (string, string, string, uint) {
+	var firstName string
+	var lastName string
+	var email string
+	var userTickets uint
 
+	fmt.Println("Enter your first name: ")
+	fmt.Scan(&firstName)
 
-func getUserInput () (string, string, string, uint){
-		var firstName string
-		var lastName string
-		var email string
-		var userTickets uint
+	fmt.Println("Enter your last name: ")
+	fmt.Scan(&lastName)
 
-		fmt.Println("Enter your first name: ")
-		fmt.Scan(&firstName)
+	fmt.Println("Enter your email address: ")
+	fmt.Scan(&email)
 
-		fmt.Println("Enter your last name: ")
-		fmt.Scan(&lastName)
+	fmt.Println("Enter number of tickets: ")
+	fmt.Scan(&userTickets)
 
-		fmt.Println("Enter your email address: ")
-		fmt.Scan(&email)
-
-		fmt.Println("Enter number of tickets: ")
-		fmt.Scan(&userTickets)
-
-		return firstName, lastName, email, userTickets
+	return firstName, lastName, email, userTickets
 
 }
 
-func bookTicket (userTickets uint ,firstName string, lastName string, email string){
-		remainingTickets = remainingTickets - userTickets
-		bookings = append(bookings, firstName+" "+lastName)
-		fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v \n", firstName, lastName, userTickets, email)
-		fmt.Printf("%v tickets remaining for %v \n", remainingTickets, conferenceTickets)	
+func bookTicket(userTickets uint, firstName string, lastName string, email string) {
+	remainingTickets = remainingTickets - userTickets
+
+	// create a map for user
+	var userData = make(map[string]string)  // [key_type]value_type   make is for create empty map
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+
+
+	bookings = append(bookings, userData)
+	fmt.Printf("List of bookings is %v \n", bookings)
+	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v \n", firstName, lastName, userTickets, email)
+	fmt.Printf("%v tickets remaining for %v \n", remainingTickets, conferenceTickets)
 }
